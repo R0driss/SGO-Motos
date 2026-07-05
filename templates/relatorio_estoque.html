@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Relatório de Estoque
+{% endblock %}
+
+{% block conteudo %}
+
+<style>
+
+    body {
+
+        font-family: Arial, sans-serif;
+
+        background-color: #f3f4f6;
+
+        color: #111827;
+    }
+
+    .container-relatorio {
+
+        background-color: white;
+
+        padding: 30px;
+
+        border-radius: 12px;
+
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+
+        margin-top: 20px;
+    }
+
+    h2 {
+
+        text-align: center;
+
+        margin-bottom: 30px;
+
+        color: #111827;
+    }
+
+    .resumo {
+
+        display: flex;
+
+        gap: 20px;
+
+        flex-wrap: wrap;
+
+        margin-bottom: 30px;
+    }
+
+    .card {
+
+        flex: 1;
+
+        min-width: 200px;
+
+        padding: 20px;
+
+        border-radius: 10px;
+
+        color: white;
+
+        text-align: center;
+
+        font-weight: bold;
+
+        font-size: 18px;
+    }
+
+    .total {
+
+        background-color: #2563eb;
+    }
+
+    .baixo {
+
+        background-color: #d97706;
+    }
+
+    .normal {
+
+        background-color: #16a34a;
+    }
+
+    .sem {
+
+        background-color: #dc2626;
+    }
+
+    table {
+
+        width: 100%;
+
+        border-collapse: collapse;
+
+        margin-top: 20px;
+
+        background-color: white;
+    }
+
+    th {
+
+        background-color: #111827;
+
+        color: white;
+
+        padding: 14px;
+
+        text-align: center;
+
+        font-size: 15px;
+    }
+
+    td {
+
+        border: 1px solid #d1d5db;
+
+        padding: 12px;
+
+        text-align: center;
+
+        font-size: 14px;
+    }
+
+    tr:nth-child(even) {
+
+        background-color: #f9fafb;
+    }
+
+    tr:hover {
+
+        background-color: #f3f4f6;
+    }
+
+    .status-baixo {
+
+        color: #d97706;
+
+        font-weight: bold;
+    }
+
+    .status-normal {
+
+        color: #2563eb;
+
+        font-weight: bold;
+    }
+
+    .status-alto {
+
+        color: #16a34a;
+
+        font-weight: bold;
+    }
+
+    .status-sem {
+
+        color: #dc2626;
+
+        font-weight: bold;
+    }
+
+    .botao-pdf {
+
+        background-color: #2563eb;
+
+        color: white;
+
+        border: none;
+
+        padding: 12px 20px;
+
+        border-radius: 8px;
+
+        cursor: pointer;
+
+        font-weight: bold;
+
+        margin-bottom: 20px;
+    }
+
+    .botao-pdf:hover {
+
+        background-color: #1d4ed8;
+    }
+
+</style>
+
+<div class="container-relatorio">
+
+    {% if not pdf %}
+
+    <a href="/relatorio_estoque/pdf">
+
+        <button class="botao-pdf">
+            📄 Exportar PDF
+        </button>
+
+    </a>
+
+    <a href="/relatorio_estoque/excel">
+
+    <button class="botao-pdf">
+        📊 Exportar Excel
+    </button>
+
+</a>
+
+    {% endif %}
+
+    <h2>
+        📦 Relatório de Estoque
+    </h2>
+
+    <div class="resumo">
+
+        <div class="card total">
+
+            Produtos<br><br>
+
+            {{ total_produtos }}
+
+        </div>
+
+        <div class="card baixo">
+
+            Estoque Baixo<br><br>
+
+            {{ estoque_baixo }}
+
+        </div>
+
+        <div class="card normal">
+
+            Estoque Normal<br><br>
+
+            {{ estoque_normal }}
+
+        </div>
+
+        <div class="card sem">
+
+            Sem Estoque<br><br>
+
+            {{ sem_estoque }}
+
+        </div>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Produto
+                </th>
+
+                <th>
+                    Quantidade
+                </th>
+
+                <th>
+                    Preço Unitário
+                </th>
+
+                <th>
+                    Valor em Estoque
+                </th>
+
+                <th>
+                    Status
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for produto in produtos %}
+
+            <tr>
+
+                <td>
+                    {{ produto.nome }}
+                </td>
+
+                <td>
+                    {{ produto.quantidade }}
+                </td>
+
+                <td>
+                    R$ {{ "%.2f"|format(produto.preco) }}
+                </td>
+
+                <td>
+                    R$ {{ "%.2f"|format(produto.preco * produto.quantidade) }}
+                </td>
+
+                <td>
+
+                    {% if produto.quantidade == 0 %}
+
+                        <span class="status-sem">
+                            ❌ Sem Estoque
+                        </span>
+
+                    {% elif produto.quantidade <= 15 %}
+
+                        <span class="status-baixo">
+                            ⚠️ Estoque Baixo
+                        </span>
+
+                    {% elif produto.quantidade <= 50 %}
+
+                        <span class="status-normal">
+                            📦 Estoque Normal
+                        </span>
+
+                    {% else %}
+
+                        <span class="status-alto">
+                            ✅ Estoque Alto
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <h3>
+
+        💰 Valor Total em Estoque:
+        R$ {{ "%.2f"|format(valor_total) }}
+
+    </h3>
+
+</div>
+
+{% endblock %}
+```

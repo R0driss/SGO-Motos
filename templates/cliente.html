@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Cliente
+{% endblock %}
+
+{% block conteudo %}
+
+<h2>Área do Cliente</h2>
+
+<!-- ========================= -->
+<!-- REGISTRAR MOTO -->
+<!-- ========================= -->
+
+<div class="form-box">
+
+    <h3>Registrar Moto</h3>
+
+    <form
+        method="POST"
+        action="/registrar_moto"
+        enctype="multipart/form-data"
+    >
+
+        <input
+            type="text"
+            name="modelo"
+            placeholder="Modelo"
+            required
+        >
+
+        <input
+            type="text"
+            name="marca"
+            placeholder="Marca"
+            required
+        >
+
+        <input
+            type="text"
+            name="placa"
+            placeholder="Placa"
+            required
+        >
+
+        <input
+            type="text"
+            name="ano"
+            placeholder="Ano"
+            required
+        >
+
+        <input
+            type="text"
+            name="problema"
+            placeholder="Problema da Moto"
+            required
+        >
+
+        <!-- ========================= -->
+        <!-- VÁRIAS FOTOS -->
+        <!-- ========================= -->
+
+        <label>
+            Fotos da Moto
+        </label>
+
+        <input
+            type="file"
+            name="fotos"
+            multiple
+            accept="image/*"
+        >
+
+        <button type="submit">
+            Registrar Moto
+        </button>
+
+    </form>
+
+</div>
+
+<!-- ========================= -->
+<!-- MINHAS MOTOS -->
+<!-- ========================= -->
+
+<h2>Minhas Motos</h2>
+
+<div class="grid">
+
+    {% for moto in motos %}
+
+    <div class="card">
+
+        <!-- ========================= -->
+        <!-- MOSTRAR TODAS AS FOTOS -->
+        <!-- ========================= -->
+
+        {% if moto.foto %}
+
+            {% set fotos = moto.foto.split(",") %}
+
+            <div
+                style="
+                    display:flex;
+                    gap:10px;
+                    flex-wrap:wrap;
+                    margin-bottom:15px;
+                "
+            >
+
+                {% for foto in fotos %}
+
+                <img
+
+                    src="{{ url_for('static', filename='uploads/' + foto) }}"
+
+                    alt="Foto da Moto"
+
+                    style="
+                        width:180px;
+                        height:140px;
+                        object-fit:cover;
+                        border-radius:10px;
+                        border:2px solid #ccc;
+                    "
+                >
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+        <h3>{{ moto.modelo }}</h3>
+
+        <p>
+
+            <strong>Marca:</strong>
+
+            {{ moto.marca }}
+
+        </p>
+
+        <p>
+
+            <strong>Placa:</strong>
+
+            {{ moto.placa }}
+
+        </p>
+
+        <p>
+
+            <strong>Ano:</strong>
+
+            {{ moto.ano }}
+
+        </p>
+
+        {% if moto.problema %}
+
+        <hr>
+
+        <p>
+
+            <strong>Problema:</strong>
+
+            {{ moto.problema }}
+
+        </p>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<!-- ========================= -->
+<!-- PRODUTOS -->
+<!-- ========================= -->
+
+<h2>Peças Disponíveis</h2>
+
+<div class="grid">
+
+    {% for produto in produtos %}
+
+    <div class="card">
+
+        <h3>{{ produto.nome }}</h3>
+
+        <p>
+
+            <strong>Quantidade:</strong>
+
+            {{ produto.quantidade }}
+
+        </p>
+
+        <p>
+
+            <strong>Preço:</strong>
+
+            R$ {{ produto.preco }}
+
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

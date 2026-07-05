@@ -1,0 +1,1 @@
+from repositories.moto_repository import *

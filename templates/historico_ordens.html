@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Histórico de Ordens
+{% endblock %}
+
+{% block conteudo %}
+
+<style>
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    .topo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .botao-pdf {
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .botao-pdf:hover {
+        background-color: #1d4ed8;
+    }
+
+    .form-box {
+        background-color: #f3f4f6;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-box form {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .form-box input,
+    .form-box select {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .form-box button {
+        background-color: #111827;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
+
+    th {
+        background-color: #111827;
+        color: white;
+        padding: 12px;
+        text-align: center;
+    }
+
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .acoes a {
+        display: block;
+        margin: 5px 0;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .concluido {
+        color: green;
+        font-weight: bold;
+    }
+
+    .andamento {
+        color: #2563eb;
+        font-weight: bold;
+    }
+
+    .cancelado {
+        color: red;
+        font-weight: bold;
+    }
+
+    .edit-input {
+        width: 90px;
+        padding: 5px;
+    }
+
+    .btn-save {
+        padding: 5px 8px;
+        border: none;
+        background: #16a34a;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="topo">
+
+    <h2>
+        📋 Histórico de Ordens de Serviço
+    </h2>
+
+    {% if not pdf %}
+
+    <a href="/historico_ordens/pdf">
+        <button class="botao-pdf">
+            Exportar PDF
+        </button>
+    </a>
+
+    <a href="/historico_ordens/excel">
+        <button class="botao-pdf">
+            📊 Exportar Excel
+        </button>
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% if not pdf %}
+
+<div class="form-box">
+
+    <form method="GET">
+
+        <input type="text" name="cliente"
+            placeholder="Buscar Cliente"
+            value="{{ request.args.get('cliente', '') }}">
+
+        <input type="text" name="servico"
+            placeholder="Buscar Serviço"
+            value="{{ request.args.get('servico', '') }}">
+
+        <select name="status">
+
+            <option value="">Todos os Status</option>
+
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluido">Concluído</option>
+            <option value="Cancelado">Cancelado</option>
+
+        </select>
+
+        <button type="submit">🔍 Filtrar</button>
+
+    </form>
+
+</div>
+
+{% endif %}
+
+<table>
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Valor</th>
+            <th>Status</th>
+
+            {% if not pdf %}
+            <th>Ações</th>
+            <th>Editar Valor</th>
+            {% endif %}
+
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% if ordens %}
+
+            {% for ordem in ordens %}
+
+            <tr>
+
+                <td>{{ ordem.id }}</td>
+                <td>{{ ordem.cliente }}</td>
+                <td>{{ ordem.servico }}</td>
+
+                <td>
+                    R$ {{ "%.2f"|format(ordem.valor) }}
+                </td>
+
+                <td>
+
+                    {% if ordem.status == "Concluido" %}
+                        <span class="concluido">✅ Concluído</span>
+
+                    {% elif ordem.status == "Em andamento" %}
+                        <span class="andamento">🔧 Em andamento</span>
+
+                    {% elif ordem.status == "Cancelado" %}
+                        <span class="cancelado">❌ Cancelado</span>
+
+                    {% else %}
+                        {{ ordem.status }}
+                    {% endif %}
+
+                </td>
+
+                {% if not pdf %}
+
+                <td class="acoes">
+
+                    <a href="/alterar_status/{{ ordem.id }}/Em andamento">🔧 Em andamento</a>
+                    <a href="/alterar_status/{{ ordem.id }}/Concluido">✅ Concluir</a>
+                    <a href="/alterar_status/{{ ordem.id }}/Cancelado">❌ Cancelar</a>
+
+                </td>
+
+                <td>
+
+                    <form method="POST" action="/atualizar_valor/{{ ordem.id }}">
+
+                        <input class="edit-input"
+                               type="number"
+                               step="0.01"
+                               name="valor"
+                               value="{{ ordem.valor }}">
+
+                        <button class="btn-save" type="submit">
+                            💾
+                        </button>
+
+                    </form>
+
+                </td>
+
+                {% endif %}
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+        <tr>
+            <td colspan="8">Nenhuma ordem encontrada.</td>
+        </tr>
+
+        {% endif %}
+
+    </tbody>
+
+</table>
+
+<br>
+
+{% if not pdf %}
+
+<a href="/admin">
+    ← Voltar ao Painel Admin
+</a>
+
+{% endif %}
+
+{% endblock %}

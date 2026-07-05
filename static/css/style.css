@@ -1,0 +1,917 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f6fa;
+    color:#222;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+    background:linear-gradient(135deg,#111,#1d1d1d);
+    color:white;
+    padding:20px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 15px rgba(0,0,0,.2);
+}
+
+header h1{
+    font-size:30px;
+    font-weight:700;
+}
+
+nav{
+    display:flex;
+    gap:15px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    background:#d40000;
+    padding:10px 18px;
+    border-radius:8px;
+    transition:.3s;
+    font-weight:600;
+}
+
+nav a:hover{
+    transform:translateY(-2px);
+    background:#ff1f1f;
+}
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+main{
+    padding:30px;
+}
+
+.admin-container{
+    max-width:1400px;
+    margin:auto;
+}
+
+/* =========================
+   TOPO ADMIN
+========================= */
+
+.topo-admin{
+    background:linear-gradient(135deg,#111,#222);
+    color:white;
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.topo-admin h1{
+    margin-bottom:20px;
+}
+
+.atalhos{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.btn-admin{
+    background:#d40000;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:10px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn-admin:hover{
+    background:#ff2222;
+    transform:translateY(-2px);
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.info-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    border-left:6px solid #d40000;
+}
+
+.info-card span{
+    color:#777;
+    font-size:14px;
+}
+
+.info-card h2{
+    margin-top:10px;
+    color:#d40000;
+    font-size:32px;
+}
+
+/* =========================
+   GRÁFICO
+========================= */
+
+.grafico-card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.titulo-card{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+/* =========================
+   FORMULÁRIOS
+========================= */
+
+.form-box{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.form-box h2{
+    margin-bottom:20px;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+input{
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    transition:.3s;
+}
+
+input:focus{
+    outline:none;
+    border-color:#d40000;
+    box-shadow:0 0 10px rgba(212,0,0,.2);
+}
+
+button{
+    padding:14px;
+    border:none;
+    background:#d40000;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    background:#ff2222;
+}
+
+/* =========================
+   ESTOQUE
+========================= */
+
+.titulo-estoque{
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.produto-card{
+    transition:.3s;
+}
+
+.produto-card:hover{
+    transform:translateY(-5px);
+}
+
+.produto-topo{
+    border-bottom:1px solid #eee;
+    padding-bottom:10px;
+    margin-bottom:15px;
+}
+
+.produto-topo h3{
+    color:#222;
+}
+
+.produto-info p{
+    margin-bottom:10px;
+}
+
+.tag-sem-estoque{
+    display:inline-block;
+    margin-top:10px;
+    background:#ffe5e5;
+    color:#d40000;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.sem-estoque{
+    color:red;
+    font-weight:bold;
+}
+
+/* =========================
+   AÇÕES DOS PRODUTOS
+========================= */
+
+.acoes{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.btn-add{
+    background:#28a745;
+}
+
+.btn-remove{
+    background:#ffc107;
+    color:black !important;
+}
+
+.btn-delete{
+    background:#dc3545;
+}
+
+.acoes a{
+    color:white;
+    text-decoration:none;
+    padding:10px 15px;
+    border-radius:8px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.acoes a:hover{
+    transform:scale(1.05);
+}
+
+/* =========================
+   ORDENS DE SERVIÇO
+========================= */
+
+.container-ordens{
+    width:95%;
+    margin:30px auto;
+    overflow-x:auto;
+}
+
+.form-ordem{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.form-ordem input{
+    flex:1;
+    min-width:180px;
+}
+
+.form-ordem button{
+    background:#d40000;
+}
+
+.form-ordem button:hover{
+    background:#ff2222;
+}
+
+.tabela-ordens{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.tabela-ordens th{
+    background:#111;
+    color:white;
+    padding:15px;
+}
+
+.tabela-ordens td{
+    padding:15px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+.tabela-ordens tr:hover{
+    background:#f8f8f8;
+}
+
+.status-andamento{
+    color:#ff9800;
+    font-weight:bold;
+}
+
+.status-finalizado{
+    color:#28a745;
+    font-weight:bold;
+}
+
+.btn-finalizar{
+    background:#28a745;
+    color:white;
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:8px;
+}
+
+.btn-remover{
+    background:#dc3545;
+    color:white;
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:8px;
+}
+
+.btn-finalizar:hover,
+.btn-remover:hover{
+    opacity:.85;
+}
+
+/* =========================
+   IMAGENS
+========================= */
+
+input[type="file"]{
+    background:white;
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:768px){
+
+    header{
+        flex-direction:column;
+        gap:15px;
+        text-align:center;
+    }
+
+    nav{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .atalhos{
+        justify-content:center;
+    }
+
+    .form-ordem{
+        flex-direction:column;
+    }
+
+    .tabela-ordens th,
+    .tabela-ordens td{
+        font-size:13px;
+        padding:10px;
+    }
+
+}
+/* =========================
+   BANNER PRINCIPAL
+========================= */
+
+.banner-admin{
+    width:100%;
+    height:350px;
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.65)
+    ),
+    url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2000');
+
+    background-size:cover;
+    background-position:center;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    margin-bottom:35px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.banner-overlay{
+    width:100%;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+
+    padding-left:60px;
+}
+
+.banner-texto{
+    color:white;
+}
+
+.banner-texto h1{
+    font-size:60px;
+    margin-bottom:10px;
+    text-transform:uppercase;
+}
+
+.banner-texto p{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.banner-texto span{
+    font-size:18px;
+    color:#ddd;
+}
+/* ==========================
+   Rodapé
+========================== */
+
+.rodape{
+    margin-top:60px;
+    background:#222;
+    color:#fff;
+    text-align:center;
+    padding:40px 20px;
+}
+
+.rodape h2{
+    margin-bottom:15px;
+    font-size:30px;
+}
+
+.rodape p{
+    color:#ddd;
+    margin-bottom:25px;
+    font-size:18px;
+}
+
+.contatos{
+    display:flex;
+    justify-content:center;
+    gap:35px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.contatos a{
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+    transition:.3s;
+}
+
+.contatos a:hover{
+    color:#00c853;
+}
+
+.contatos i{
+    font-size:24px;
+    margin-right:8px;
+}
+
+.rodape hr{
+    border:1px solid #444;
+    margin:25px auto;
+    width:80%;
+}
+
+.rodape small{
+    color:#aaa;
+}
+/* =========================
+   MODO ESCURO
+========================= */
+
+body.dark{
+    background:#121212;
+    color:#f1f1f1;
+}
+
+body.dark header{
+    background:#000;
+}
+
+body.dark nav a{
+    background:#333;
+    color:white;
+}
+
+body.dark nav a:hover{
+    background:#555;
+}
+
+body.dark #tema-btn{
+    background:#444;
+    color:white;
+}
+
+body.dark .info-card,
+body.dark .grafico-card,
+body.dark .form-box,
+body.dark .card,
+body.dark .tabela-ordens{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark .produto-topo h3,
+body.dark .titulo-card,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p,
+body.dark span{
+    color:white;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea{
+    background:#2b2b2b;
+    color:white;
+    border:1px solid #555;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+    color:#bbb;
+}
+
+body.dark table{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark th{
+    background:#000;
+}
+
+body.dark td{
+    border-color:#444;
+}
+
+body.dark tr:nth-child(even){
+    background:#2a2a2a;
+}
+
+body.dark .rodape{
+    background:#111;
+}
+
+body.dark .rodape p,
+body.dark .rodape small{
+    color:#ccc;
+}
+
+/* Botão do tema */
+
+#tema-btn{
+    background:#d40000;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:18px;
+    transition:.3s;
+}
+
+#tema-btn:hover{
+    background:#ff2222;
+}
+.rodape p{
+    line-height:1.8;
+}
+
+.rodape .bi-geo-alt-fill{
+    color:#ff4d4d;
+    margin-right:5px;
+}
+/* =====================================================
+   RESPONSIVIDADE COMPLETA
+===================================================== */
+
+@media (max-width:768px){
+
+    /* HEADER */
+
+    header{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        padding:20px;
+        gap:15px;
+    }
+
+    header h1{
+        font-size:28px;
+    }
+
+    nav{
+        width:100%;
+        display:flex;
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    nav a{
+        width:45%;
+        text-align:center;
+        padding:12px;
+        font-size:15px;
+    }
+
+    /* CONTEÚDO */
+
+    main{
+        padding:15px;
+    }
+
+    /* DASHBOARD */
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .info-card,
+    .card,
+    .grafico-card,
+    .form-box{
+        width:100%;
+    }
+
+    /* TOPO */
+
+    .topo{
+        flex-direction:column;
+        gap:15px;
+        text-align:center;
+    }
+
+    .topo-admin{
+        padding:20px;
+    }
+
+    .atalhos{
+        justify-content:center;
+    }
+
+    .btn-admin{
+        width:100%;
+        text-align:center;
+    }
+
+    /* FORMULÁRIOS */
+
+    form{
+        width:100%;
+    }
+
+    .form-box form,
+    .form-ordem{
+        flex-direction:column;
+    }
+
+    input,
+    select,
+    textarea,
+    button{
+        width:100%;
+        font-size:16px;
+    }
+
+    button{
+        min-height:45px;
+    }
+
+    /* TABELAS */
+
+    table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+    .tabela-ordens{
+        display:block;
+        overflow-x:auto;
+    }
+
+    .tabela-ordens th,
+    .tabela-ordens td{
+        padding:12px;
+        font-size:14px;
+    }
+
+    /* AÇÕES */
+
+    .acoes{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .acoes a{
+        width:100%;
+        text-align:center;
+    }
+
+    /* CARDS */
+
+    .produto-card{
+        width:100%;
+    }
+
+    .produto-topo h3{
+        font-size:20px;
+    }
+
+    /* IMAGENS */
+
+    img{
+        max-width:100%;
+        height:auto;
+    }
+
+    .card img{
+        height:auto;
+    }
+
+    /* BANNER */
+
+    .banner-admin{
+        height:220px;
+    }
+
+    .banner-overlay{
+        justify-content:center;
+        padding:20px;
+        text-align:center;
+    }
+
+    .banner-texto h1{
+        font-size:34px;
+    }
+
+    .banner-texto p{
+        font-size:18px;
+    }
+
+    .banner-texto span{
+        font-size:15px;
+    }
+
+    /* TÍTULOS */
+
+    h1{
+        font-size:30px;
+    }
+
+    h2{
+        font-size:24px;
+    }
+
+    h3{
+        font-size:20px;
+    }
+
+    /* BOTÕES */
+
+    .btn-finalizar,
+    .btn-remover,
+    .btn-add,
+    .btn-delete,
+    .btn-remove{
+        display:block;
+        width:100%;
+        text-align:center;
+        margin-bottom:8px;
+    }
+
+    /* RODAPÉ */
+
+    .rodape{
+        padding:30px 15px;
+    }
+
+    .rodape h2{
+        font-size:24px;
+    }
+
+    .rodape p{
+        font-size:16px;
+        line-height:1.8;
+    }
+
+    .contatos{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .contatos a{
+        font-size:17px;
+    }
+
+}
+
+/* =====================================================
+   AJUSTES GERAIS
+===================================================== */
+
+img{
+    max-width:100%;
+    height:auto;
+}
+
+table{
+    width:100%;
+}
+
+button{
+    cursor:pointer;
+}
+
+input,
+select,
+textarea{
+    max-width:100%;
+}
+
+html{
+    scroll-behavior:smooth;
+}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Início
+{% endblock %}
+
+{% block conteudo %}
+
+<h2>Peças Disponíveis</h2>
+
+<form method="GET">
+
+    <input
+    type="text"
+    name="busca"
+    placeholder="Buscar peça">
+
+    <button type="submit">
+
+        Buscar
+
+    </button>
+
+</form>
+
+<div class="grid">
+
+{% for produto in produtos %}
+
+<div class="card">
+
+    <h3>{{ produto.nome }}</h3>
+
+    <p>
+
+        Quantidade:
+        {{ produto.quantidade }}
+
+    </p>
+
+    <p>
+
+        Preço:
+        R$ {{ produto.preco }}
+
+    </p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

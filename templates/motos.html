@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Motos
+{% endblock %}
+
+{% block conteudo %}
+
+<h2>Motos Registradas</h2>
+
+<!-- ========================= -->
+<!-- BUSCA -->
+<!-- ========================= -->
+
+<div class="form-box">
+
+    <h3>Buscar por ID do Usuário</h3>
+
+    <input
+        type="text"
+        id="buscarUsuario"
+        placeholder="Digite o ID do usuário..."
+        onkeyup="filtrarUsuario()"
+    >
+
+</div>
+
+<!-- ========================= -->
+<!-- LISTA DE MOTOS -->
+<!-- ========================= -->
+
+<div class="grid">
+
+    {% for moto in motos %}
+
+    <div
+        class="card moto-card"
+        data-usuario="{{ moto.usuario }}"
+    >
+
+        <h3>{{ moto.modelo }}</h3>
+
+        <p>
+            <strong>ID Usuário:</strong>
+            {{ moto.usuario }}
+        </p>
+
+        <p>
+            <strong>Marca:</strong>
+            {{ moto.marca }}
+        </p>
+
+        <p>
+            <strong>Placa:</strong>
+            {{ moto.placa }}
+        </p>
+
+        <p>
+            <strong>Ano:</strong>
+            {{ moto.ano }}
+        </p>
+
+        <p>
+            <strong>Problema:</strong>
+            {{ moto.problema }}
+        </p>
+
+        <!-- ========================= -->
+        <!-- MOSTRAR VÁRIAS FOTOS -->
+        <!-- ========================= -->
+
+        {% if moto.foto %}
+
+            {% set fotos = moto.foto.split(",") %}
+
+            <div
+                style="
+                    display:flex;
+                    gap:10px;
+                    flex-wrap:wrap;
+                    margin-top:15px;
+                "
+            >
+
+                {% for foto in fotos %}
+
+                <img
+                    src="{{ url_for('static', filename='uploads/' + foto) }}"
+                    alt="Foto da moto"
+
+                    style="
+                        width:180px;
+                        height:140px;
+                        object-fit:cover;
+                        border-radius:10px;
+                        border:2px solid #ccc;
+                    "
+                >
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p>
+
+                <em>Nenhuma foto enviada.</em>
+
+            </p>
+
+        {% endif %}
+
+        <!-- ========================= -->
+        <!-- AÇÕES -->
+        <!-- ========================= -->
+
+        <div
+            class="acoes"
+            style="margin-top:15px;"
+        >
+
+            <a
+                href="/remover_moto/{{ moto.id }}"
+                style="
+                    background:#d9534f;
+                    color:white;
+                    padding:8px 14px;
+                    border-radius:8px;
+                    text-decoration:none;
+                "
+            >
+                Remover
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<!-- ========================= -->
+<!-- SCRIPT BUSCA -->
+<!-- ========================= -->
+
+<script>
+
+function filtrarUsuario() {
+
+    let filtro = document
+        .getElementById("buscarUsuario")
+        .value
+        .trim();
+
+    let motos = document.querySelectorAll(
+        ".moto-card"
+    );
+
+    motos.forEach(function(moto) {
+
+        let usuario = moto.getAttribute(
+            "data-usuario"
+        );
+
+        if (usuario.includes(filtro)) {
+
+            moto.style.display = "";
+
+        } else {
+
+            moto.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

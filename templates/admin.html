@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Admin
+{% endblock %}
+
+{% block conteudo %}
+
+<div class="banner-admin">
+
+    <div class="banner-overlay">
+
+        <div class="banner-texto">
+
+            <h1>SGO Motos</h1>
+
+            <p>
+                Sistema de Gestão para Oficina e Estoque
+            </p>
+
+            <span>
+                Controle de produtos, serviços e ordens de manutenção.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="admin-container">
+
+    <div class="topo-admin">
+
+        <h1>🏍️ Painel Administrativo</h1>
+
+        <div class="atalhos">
+
+            <a href="/relatorio_estoque" class="btn-admin">
+                📊 Relatório de Estoque
+            </a>
+
+            <a href="/historico_ordens" class="btn-admin">
+                📋 Histórico de Ordens
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="dashboard">
+
+        <div class="info-card">
+            <span>Total de Produtos</span>
+            <h2>{{ total_produtos }}</h2>
+        </div>
+
+        <div class="info-card">
+            <span>Valor Total em Estoque</span>
+            <h2>R$ {{ "%.2f"|format(valor_total) }}</h2>
+        </div>
+
+    </div>
+
+    <div class="grafico-card">
+
+        <div class="titulo-card">
+            📊 Controle de Estoque
+        </div>
+
+        <canvas id="graficoEstoque"></canvas>
+
+    </div>
+
+    <div class="form-box">
+
+        <h2>➕ Adicionar Produto</h2>
+
+        <form method="POST" action="/adicionar">
+
+            <input
+                type="text"
+                name="nome"
+                placeholder="Nome do Produto"
+                required>
+
+            <input
+                type="number"
+                name="quantidade"
+                placeholder="Quantidade"
+                required>
+
+            <input
+                type="number"
+                step="0.01"
+                name="preco"
+                placeholder="Preço"
+                required>
+
+            <button type="submit">
+                Salvar Produto
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="form-box">
+
+        <h2>🔍 Pesquisar Produto</h2>
+
+        <input
+            type="text"
+            id="buscarProduto"
+            placeholder="Digite o nome do produto..."
+            onkeyup="filtrarProdutos()">
+
+    </div>
+
+    <h2 class="titulo-estoque">
+        📦 Estoque Atual
+    </h2>
+
+    <div class="grid">
+
+        {% for produto in produtos %}
+
+        <div class="card produto-card">
+
+            <div class="produto-topo">
+
+                <h3>{{ produto.nome }}</h3>
+
+            </div>
+
+            <div class="produto-info">
+
+                <p>
+                    <strong>Quantidade:</strong>
+                    {{ produto.quantidade }}
+                </p>
+
+                <p>
+                    <strong>Preço:</strong>
+                    R$ {{ produto.preco }}
+                </p>
+
+            </div>
+
+            {% if produto.quantidade <= 0 %}
+
+            <span class="tag-sem-estoque">
+                Sem Estoque
+            </span>
+
+            {% endif %}
+
+            <div class="acoes">
+
+                <a
+                    href="/aumentar/{{ produto.id }}"
+                    class="btn-add">
+                    +
+                </a>
+
+                <a
+                    href="/diminuir/{{ produto.id }}"
+                    class="btn-remove">
+                    -
+                </a>
+
+                <a
+                    href="/remover/{{ produto.id }}"
+                    class="btn-delete">
+                    Excluir
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<script>
+
+function filtrarProdutos() {
+
+    let input = document.getElementById("buscarProduto");
+    let filtro = input.value.toLowerCase();
+
+    let cards = document.querySelectorAll(".produto-card");
+
+    cards.forEach(function(card){
+
+        let texto = card.textContent.toLowerCase();
+
+        if(texto.includes(filtro)){
+            card.style.display = "";
+        }
+        else{
+            card.style.display = "none";
+        }
+
+    });
+
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const nomes = {{ nomes | tojson }};
+const quantidades = {{ quantidades | tojson }};
+
+const ctx = document.getElementById("graficoEstoque");
+
+new Chart(ctx, {
+
+    type: "bar",
+
+    data: {
+
+        labels: nomes,
+
+        datasets: [{
+
+            label: "Quantidade em Estoque",
+
+            data: quantidades,
+
+            backgroundColor: [
+                "#d40000"
+            ],
+
+            borderWidth: 1
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+                display: true
+            }
+
+        },
+
+        scales: {
+
+            y: {
+                beginAtZero: true
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1 @@
+from repositories.produto_repository import *

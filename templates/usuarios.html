@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+Usuários
+{% endblock %}
+
+{% block conteudo %}
+
+<h2>Usuários do Sistema</h2>
+
+<div class="form-box">
+
+    <form method="GET" action="/usuarios">
+
+        <input
+        type="text"
+        name="busca"
+        placeholder="Buscar por nome">
+
+        <button type="submit">
+
+            Buscar
+
+        </button>
+
+    </form>
+
+</div>
+
+<div class="grid">
+
+{% for usuario in usuarios %}
+
+<div class="card">
+
+    <h3>{{ usuario.nome }}</h3>
+
+    <p>
+
+        <strong>Usuário:</strong>
+
+        {{ usuario.usuario }}
+
+    </p>
+
+    <p>
+
+        <strong>Email:</strong>
+
+        {{ usuario.email }}
+
+    </p>
+
+    <p>
+
+        <strong>Telefone:</strong>
+
+        {{ usuario.telefone }}
+
+    </p>
+
+    <p>
+
+        <strong>Tipo:</strong>
+
+        {{ usuario.tipo }}
+
+    </p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

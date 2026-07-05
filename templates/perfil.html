@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Meu Perfil
+{% endblock %}
+
+{% block conteudo %}
+
+<style>
+
+.perfil-container{
+
+    max-width:700px;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+.perfil-container h2{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.perfil-container form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.perfil-container label{
+
+    font-weight:bold;
+
+}
+
+.perfil-container input{
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+}
+
+.perfil-container button{
+
+    background:#d40000;
+
+    color:white;
+
+    border:none;
+
+    padding:14px;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.perfil-container button:hover{
+
+    background:#ff2222;
+
+}
+
+</style>
+
+<div class="perfil-container">
+
+    <h2>👤 Meu Perfil</h2>
+
+    <form method="POST">
+
+        <label>Nome</label>
+
+        <input
+            type="text"
+            name="nome"
+            value="{{ usuario.nome }}"
+            required
+        >
+
+        <label>Usuário</label>
+
+        <input
+            type="text"
+            value="{{ usuario.usuario }}"
+            disabled
+        >
+
+        <label>E-mail</label>
+
+        <input
+            type="email"
+            name="email"
+            value="{{ usuario.email }}"
+        >
+
+        <label>Telefone</label>
+
+        <input
+            type="text"
+            name="telefone"
+            value="{{ usuario.telefone }}"
+        >
+
+        <label>Nova Senha</label>
+
+        <input
+            type="password"
+            name="senha"
+            value="{{ usuario.senha }}"
+        >
+
+        <button type="submit">
+
+            💾 Salvar Alterações
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
