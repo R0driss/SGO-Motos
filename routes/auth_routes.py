@@ -89,6 +89,13 @@ def esqueci_senha():
     return render_template(
         "esqueci_senha.html"
     )
+
+@auth.route("/enviar-recuperacao", methods=["POST"])
+def enviar_recuperacao():
+
+    email = request.form["email"]
+
+    return f"E-mail recebido: {email}"
 # =========================
 # LOGOUT
 # =========================
