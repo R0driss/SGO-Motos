@@ -8,14 +8,15 @@
 
     <h2>Recuperar Senha</h2>
 
- <form action="{{ url_for('auth.enviar_recuperacao') }}" method="POST"></form>
+    <form action="{{ url_for('auth.enviar_recuperacao') }}" method="POST">
+
         <label>E-mail</label><br>
 
         <input
-    type="email"
-    name="email"
-    required
->
+            type="email"
+            name="email"
+            required
+        >
 
         <br><br>
 
