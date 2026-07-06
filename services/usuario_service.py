@@ -82,22 +82,27 @@ def gerar_token():
 
 def criar_token_recuperacao(email):
 
+    print("1 - Entrou na função")
+
     usuario = buscar_usuario_por_email(email)
-    print("Usuário:", usuario)
+    print("2 - Usuário:", usuario)
 
     if not usuario:
+        print("3 - Usuário não encontrado")
         return None
 
     token = gerar_token()
-    print("Token:", token)
+    print("4 - Token:", token)
 
     expiracao = datetime.now() + timedelta(minutes=30)
-    print("Expiração:", expiracao)
+    print("5 - Expiração:", expiracao)
 
     salvar_token_recuperacao(
         email,
         token,
         expiracao
     )
+
+    print("6 - Token salvo no banco")
 
     return token

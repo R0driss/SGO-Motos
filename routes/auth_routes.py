@@ -95,16 +95,16 @@ def enviar_recuperacao():
 
     email = request.form["email"]
 
+    print("Email recebido:", email)
+
     token = criar_token_recuperacao(email)
+
+    print("Token retornado:", token)
 
     if not token:
         return "E-mail não encontrado!"
 
-    return f"""
-    Token gerado com sucesso!<br><br>
-
-    {token}
-    """
+    return f"Token gerado: {token}"
 # =========================
 # LOGOUT
 # =========================

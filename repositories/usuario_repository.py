@@ -255,21 +255,3 @@ def salvar_token_recuperacao(
     cursor.close()
     conn.close()
 
-def criar_token_recuperacao(email):
-
-    usuario = buscar_usuario_por_email(email)
-
-    if not usuario:
-        return None
-
-    token = gerar_token()
-
-    expiracao = datetime.now() + timedelta(minutes=30)
-
-    salvar_token_recuperacao(
-        email,
-        token,
-        expiracao
-    )
-
-    return token
