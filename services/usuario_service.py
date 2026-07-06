@@ -79,3 +79,25 @@ def obter_usuario_por_email(email):
 def gerar_token():
 
     return secrets.token_urlsafe(32)
+
+def criar_token_recuperacao(email):
+
+    usuario = buscar_usuario_por_email(email)
+    print("Usuário:", usuario)
+
+    if not usuario:
+        return None
+
+    token = gerar_token()
+    print("Token:", token)
+
+    expiracao = datetime.now() + timedelta(minutes=30)
+    print("Expiração:", expiracao)
+
+    salvar_token_recuperacao(
+        email,
+        token,
+        expiracao
+    )
+
+    return token

@@ -64,6 +64,8 @@ def perfil():
         usuario=usuario_dados
     )
 
+
+
 # =========================
 # NOTIFICAÇÕES
 # =========================
