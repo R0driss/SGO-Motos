@@ -225,3 +225,51 @@ def buscar_usuario_por_email(email):
     conn.close()
 
     return usuario
+
+def salvar_token_recuperacao(
+    email,
+    token,
+    expiracao
+):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        UPDATE usuarios
+        SET
+            token_recuperacao = %s,
+            expiracao_token = %s
+        WHERE email = %s
+        """,
+        (
+            token,
+            expiracao,
+            email
+        )
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+def criar_token_recuperacao(email):
+
+    usuario = buscar_usuario_por_email(email)
+
+    if not usuario:
+        return None
+
+    token = gerar_token()
+
+    expiracao = datetime.now() + timedelta(minutes=30)
+
+    salvar_token_recuperacao(
+        email,
+        token,
+        expiracao
+    )
+
+    return token

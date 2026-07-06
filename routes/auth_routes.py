@@ -93,18 +93,18 @@ def esqueci_senha():
 @auth.route("/enviar-recuperacao", methods=["POST"])
 def enviar_recuperacao():
 
-    print("=== ENTROU NA ROTA ===")
-
     email = request.form["email"]
-    print("Email recebido:", email)
 
-    usuario = obter_usuario_por_email(email)
-    print("Usuário encontrado:", usuario)
+    token = criar_token_recuperacao(email)
 
-    if usuario:
-        return "Usuário encontrado!"
+    if not token:
+        return "E-mail não encontrado!"
 
-    return "E-mail não encontrado!"
+    return f"""
+    Token gerado com sucesso!<br><br>
+
+    {token}
+    """
 # =========================
 # LOGOUT
 # =========================

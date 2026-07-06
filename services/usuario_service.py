@@ -1,3 +1,5 @@
+import secrets
+from datetime import datetime, timedelta
 from repositories.usuario_repository import *
 
 from services.email_service import enviar_email
@@ -73,3 +75,7 @@ def obter_usuario_por_email(email):
     return buscar_usuario_por_email(
         email
     )
+
+def gerar_token():
+
+    return secrets.token_urlsafe(32)
