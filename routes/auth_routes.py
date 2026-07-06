@@ -74,9 +74,21 @@ def login():
             return redirect(url_for("moto.cliente"))
 
         return "Login inválido"
+    
+    
 
     return render_template("login.html")
 
+  # =========================
+# ESQUECI SENHA
+# =========================
+
+@auth.route("/esqueci-senha")
+def esqueci_senha():
+
+    return render_template(
+        "esqueci_senha.html"
+    )
 # =========================
 # LOGOUT
 # =========================
