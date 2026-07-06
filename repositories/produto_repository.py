@@ -1,27 +1,32 @@
 from database import conectar
 
+
 def listar_produtos(busca=None):
 
     conn = conectar()
+    cursor = conn.cursor()
 
     if busca:
 
-        produtos = conn.execute(
+        cursor.execute(
 
-            "SELECT * FROM produtos WHERE nome LIKE ?",
+            "SELECT * FROM produtos WHERE nome ILIKE %s",
 
             (f"%{busca}%",)
 
-        ).fetchall()
+        )
 
     else:
 
-        produtos = conn.execute(
+        cursor.execute(
 
             "SELECT * FROM produtos"
 
-        ).fetchall()
+        )
 
+    produtos = cursor.fetchall()
+
+    cursor.close()
     conn.close()
 
     return produtos
@@ -34,10 +39,11 @@ def adicionar_produto(
 ):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
+    cursor.execute(
 
-        "INSERT INTO produtos(nome, quantidade, preco) VALUES (?, ?, ?)",
+        "INSERT INTO produtos(nome, quantidade, preco) VALUES (%s, %s, %s)",
 
         (nome, quantidade, preco)
 
@@ -45,16 +51,18 @@ def adicionar_produto(
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def remover_produto(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
+    cursor.execute(
 
-        "DELETE FROM produtos WHERE id = ?",
+        "DELETE FROM produtos WHERE id = %s",
 
         (id,)
 
@@ -62,16 +70,18 @@ def remover_produto(id):
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def aumentar_produto(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
+    cursor.execute(
 
-        "UPDATE produtos SET quantidade = quantidade + 1 WHERE id = ?",
+        "UPDATE produtos SET quantidade = quantidade + 1 WHERE id = %s",
 
         (id,)
 
@@ -79,26 +89,30 @@ def aumentar_produto(id):
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def diminuir_produto(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    produto = conn.execute(
+    cursor.execute(
 
-        "SELECT * FROM produtos WHERE id = ?",
+        "SELECT * FROM produtos WHERE id = %s",
 
         (id,)
 
-    ).fetchone()
+    )
 
-    if produto["quantidade"] > 0:
+    produto = cursor.fetchone()
 
-        conn.execute(
+    if produto and produto["quantidade"] > 0:
 
-            "UPDATE produtos SET quantidade = quantidade - 1 WHERE id = ?",
+        cursor.execute(
+
+            "UPDATE produtos SET quantidade = quantidade - 1 WHERE id = %s",
 
             (id,)
 
@@ -106,4 +120,5 @@ def diminuir_produto(id):
 
         conn.commit()
 
+    cursor.close()
     conn.close()

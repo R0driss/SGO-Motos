@@ -4,11 +4,15 @@ from database import conectar
 def listar_motos():
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    motos = conn.execute(
+    cursor.execute(
         "SELECT * FROM motos ORDER BY id DESC"
-    ).fetchall()
+    )
 
+    motos = cursor.fetchall()
+
+    cursor.close()
     conn.close()
 
     return motos
@@ -17,12 +21,20 @@ def listar_motos():
 def listar_motos_usuario(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    motos = conn.execute(
-        "SELECT * FROM motos WHERE usuario = ?",
+    cursor.execute(
+        """
+        SELECT * FROM motos
+        WHERE usuario = %s
+        ORDER BY id DESC
+        """,
         (usuario,)
-    ).fetchall()
+    )
 
+    motos = cursor.fetchall()
+
+    cursor.close()
     conn.close()
 
     return motos
@@ -39,7 +51,6 @@ def registrar_moto(
 ):
 
     conn = conectar()
-
     cursor = conn.cursor()
 
     cursor.execute(
@@ -53,7 +64,7 @@ def registrar_moto(
             problema,
             foto
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         """,
         (
             usuario,
@@ -67,17 +78,22 @@ def registrar_moto(
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()
 
 
 def remover_moto(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-        "DELETE FROM motos WHERE id = ?",
+    cursor.execute(
+        "DELETE FROM motos WHERE id = %s",
         (id,)
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()

@@ -1,5 +1,6 @@
 from database import conectar
 
+
 def criar_agendamento(
     usuario,
     servico,
@@ -8,25 +9,29 @@ def criar_agendamento(
 ):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    existe = conn.execute(
+    cursor.execute(
         """
         SELECT *
         FROM agendamentos
-        WHERE data = ?
-        AND horario = ?
+        WHERE data = %s
+        AND horario = %s
         AND status != 'Cancelado'
         """,
         (data, horario)
-    ).fetchone()
+    )
+
+    existe = cursor.fetchone()
 
     if existe:
 
+        cursor.close()
         conn.close()
 
         return False
 
-    conn.execute(
+    cursor.execute(
         """
         INSERT INTO agendamentos
         (
@@ -36,7 +41,7 @@ def criar_agendamento(
             horario,
             status
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s)
         """,
         (
             usuario,
@@ -48,6 +53,8 @@ def criar_agendamento(
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()
 
     return True

@@ -8,49 +8,48 @@ def criar_notificacao(
 ):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
+    cursor.execute(
         """
         INSERT INTO notificacoes(
             usuario,
             mensagem,
             data
         )
-
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """,
-
         (
             usuario,
             mensagem,
             data
         )
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def listar_notificacoes(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    notificacoes = conn.execute(
-
+    cursor.execute(
         """
         SELECT *
         FROM notificacoes
-        WHERE usuario = ?
+        WHERE usuario = %s
         ORDER BY id DESC
         """,
-
         (usuario,)
+    )
 
-    ).fetchall()
+    notificacoes = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     return notificacoes
@@ -59,20 +58,21 @@ def listar_notificacoes(usuario):
 def contar_nao_lidas(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    total = conn.execute(
-
+    cursor.execute(
         """
         SELECT COUNT(*) AS total
         FROM notificacoes
-        WHERE usuario = ?
-        AND lida = 0
+        WHERE usuario = %s
+        AND lida = FALSE
         """,
-
         (usuario,)
+    )
 
-    ).fetchone()
+    total = cursor.fetchone()
 
+    cursor.close()
     conn.close()
 
     return total["total"]
@@ -81,21 +81,18 @@ def contar_nao_lidas(usuario):
 def marcar_como_lida(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
+    cursor.execute(
         """
         UPDATE notificacoes
-
-        SET lida = 1
-
-        WHERE usuario = ?
+        SET lida = TRUE
+        WHERE usuario = %s
         """,
-
         (usuario,)
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()

@@ -1,17 +1,19 @@
 from database import conectar
 
+
 def buscar_usuario(usuario, senha):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    user = conn.execute(
-
-        "SELECT * FROM usuarios WHERE usuario = ? AND senha = ?",
-
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE usuario = %s AND senha = %s",
         (usuario, senha)
+    )
 
-    ).fetchone()
+    user = cursor.fetchone()
 
+    cursor.close()
     conn.close()
 
     return user
@@ -20,15 +22,16 @@ def buscar_usuario(usuario, senha):
 def buscar_usuario_existente(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    existe = conn.execute(
-
-        "SELECT * FROM usuarios WHERE usuario = ?",
-
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE usuario = %s",
         (usuario,)
+    )
 
-    ).fetchone()
+    existe = cursor.fetchone()
 
+    cursor.close()
     conn.close()
 
     return existe
@@ -44,11 +47,10 @@ def criar_usuario(
 ):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
+    cursor.execute(
         """
-
         INSERT INTO usuarios(
             usuario,
             senha,
@@ -57,11 +59,8 @@ def criar_usuario(
             telefone,
             email
         )
-
-        VALUES (?, ?, ?, ?, ?, ?)
-
+        VALUES (%s, %s, %s, %s, %s, %s)
         """,
-
         (
             usuario,
             senha,
@@ -70,91 +69,82 @@ def criar_usuario(
             telefone,
             email
         )
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def listar_usuarios(busca=None):
 
     conn = conectar()
+    cursor = conn.cursor()
 
     if busca:
 
-        usuarios = conn.execute(
-
+        cursor.execute(
             """
-
             SELECT
-
                 id,
                 nome,
                 usuario,
                 email,
                 telefone,
                 tipo
-
             FROM usuarios
-
-            WHERE nome LIKE ?
-
+            WHERE nome ILIKE %s
             ORDER BY id DESC
-
             """,
-
             (f"%{busca}%",)
-
-        ).fetchall()
+        )
 
     else:
 
-        usuarios = conn.execute(
-
+        cursor.execute(
             """
-
             SELECT
-
                 id,
                 nome,
                 usuario,
                 email,
                 telefone,
                 tipo
-
             FROM usuarios
-
             ORDER BY id DESC
-
             """
+        )
 
-        ).fetchall()
+    usuarios = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     return usuarios
 
+
 def buscar_usuario_por_login(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    usuario_encontrado = conn.execute(
-
+    cursor.execute(
         """
         SELECT *
         FROM usuarios
-        WHERE usuario = ?
+        WHERE usuario = %s
         """,
-
         (usuario,)
+    )
 
-    ).fetchone()
+    usuario_encontrado = cursor.fetchone()
 
+    cursor.close()
     conn.close()
 
     return usuario_encontrado
+
 
 def atualizar_usuario(
     usuario,
@@ -165,21 +155,18 @@ def atualizar_usuario(
 ):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
+    cursor.execute(
         """
         UPDATE usuarios
-
         SET
-            nome = ?,
-            email = ?,
-            telefone = ?,
-            senha = ?
-
-        WHERE usuario = ?
+            nome = %s,
+            email = %s,
+            telefone = %s,
+            senha = %s
+        WHERE usuario = %s
         """,
-
         (
             nome,
             email,
@@ -187,9 +174,9 @@ def atualizar_usuario(
             senha,
             usuario
         )
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()

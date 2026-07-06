@@ -1,15 +1,18 @@
 from database import conectar
 
+
 def listar_ordens_admin():
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    ordens = conn.execute(
-
+    cursor.execute(
         "SELECT * FROM ordens ORDER BY id DESC"
+    )
 
-    ).fetchall()
+    ordens = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     return ordens
@@ -18,22 +21,20 @@ def listar_ordens_admin():
 def listar_ordens_usuario(usuario):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    ordens = conn.execute(
-
+    cursor.execute(
         """
-
         SELECT * FROM ordens
-        WHERE usuario = ?
-
+        WHERE usuario = %s
         ORDER BY id DESC
-
         """,
-
         (usuario,)
+    )
 
-    ).fetchall()
+    ordens = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     return ordens
@@ -48,11 +49,10 @@ def adicionar_ordem(
 ):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
+    cursor.execute(
         """
-
         INSERT INTO ordens(
             usuario,
             cliente,
@@ -61,11 +61,8 @@ def adicionar_ordem(
             valor,
             status
         )
-
-        VALUES (?, ?, ?, ?, ?, ?)
-
+        VALUES (%s, %s, %s, %s, %s, %s)
         """,
-
         (
             usuario,
             cliente,
@@ -74,60 +71,57 @@ def adicionar_ordem(
             valor,
             "Em andamento"
         )
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def finalizar_ordem(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
+    cursor.execute(
         """
-
         UPDATE ordens
-        SET status = ?
-
-        WHERE id = ?
-
+        SET status = %s
+        WHERE id = %s
         """,
-
         (
             "Finalizado",
             id
         )
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()
 
 
 def remover_ordem(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
-
-        "DELETE FROM ordens WHERE id = ?",
-
+    cursor.execute(
+        "DELETE FROM ordens WHERE id = %s",
         (id,)
-
     )
 
     conn.commit()
 
+    cursor.close()
     conn.close()
+
 
 def buscar_ordens(cliente="", moto="", servico="", status=""):
 
     conn = conectar()
+    cursor = conn.cursor()
 
     query = """
         SELECT * FROM ordens
@@ -137,41 +131,43 @@ def buscar_ordens(cliente="", moto="", servico="", status=""):
     parametros = []
 
     if cliente:
-        query += " AND cliente LIKE ?"
+        query += " AND cliente ILIKE %s"
         parametros.append(f"%{cliente}%")
 
     if moto:
-        query += " AND moto LIKE ?"
+        query += " AND moto ILIKE %s"
         parametros.append(f"%{moto}%")
 
     if servico:
-        query += " AND servico LIKE ?"
+        query += " AND servico ILIKE %s"
         parametros.append(f"%{servico}%")
 
     if status:
-        query += " AND status = ?"
+        query += " AND status = %s"
         parametros.append(status)
 
     query += " ORDER BY id DESC"
 
-    ordens = conn.execute(
-        query,
-        parametros
-    ).fetchall()
+    cursor.execute(query, tuple(parametros))
 
+    ordens = cursor.fetchall()
+
+    cursor.close()
     conn.close()
 
     return ordens
 
+
 def alterar_status(id, status):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
+    cursor.execute(
         """
         UPDATE ordens
-        SET status = ?
-        WHERE id = ?
+        SET status = %s
+        WHERE id = %s
         """,
         (
             status,
@@ -180,56 +176,48 @@ def alterar_status(id, status):
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()
+
 
 def atualizar_valor_ordem(id, valor):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    conn.execute(
+    cursor.execute(
         """
         UPDATE ordens
-        SET valor = ?
-        WHERE id = ?
+        SET valor = %s
+        WHERE id = %s
         """,
         (valor, id)
     )
 
     conn.commit()
+
+    cursor.close()
     conn.close()
 
-def atualizar_valor_ordem(id, valor):
-
-    conn = conectar()
-
-    conn.execute(
-        """
-        UPDATE ordens
-        SET valor = ?
-        WHERE id = ?
-        """,
-        (valor, id)
-    )
-
-    conn.commit()
-    conn.close()
 
 def buscar_ordem_por_id(id):
 
     conn = conectar()
+    cursor = conn.cursor()
 
-    ordem = conn.execute(
-
+    cursor.execute(
         """
         SELECT *
         FROM ordens
-        WHERE id = ?
+        WHERE id = %s
         """,
-
         (id,)
+    )
 
-    ).fetchone()
+    ordem = cursor.fetchone()
 
+    cursor.close()
     conn.close()
 
     return ordem
