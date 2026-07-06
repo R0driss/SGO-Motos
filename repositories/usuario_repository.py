@@ -1,6 +1,15 @@
 from database import conectar
 
 
+def criar_admin():
+    conn = conectar()
+    conn.execute("""
+        INSERT INTO usuarios (nome, email, senha, tipo)
+        VALUES (%s, %s, %s, %s)
+    """, ("Admin", "admin@admin.com", "123456", "admin"))
+    conn.commit()
+    conn.close()
+
 def buscar_usuario(usuario, senha):
 
     conn = conectar()
