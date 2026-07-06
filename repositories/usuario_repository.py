@@ -11,10 +11,11 @@ def criar_admin():
     conn.commit()
     conn.close()
 
+from psycopg2.extras import RealDictCursor
+
 def buscar_usuario(usuario, senha):
 
     conn = conectar()
-
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
@@ -28,6 +29,8 @@ def buscar_usuario(usuario, senha):
     )
 
     user = cursor.fetchone()
+
+    print("RESULTADO:", user)
 
     cursor.close()
     conn.close()
