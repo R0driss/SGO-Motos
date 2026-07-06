@@ -1,4 +1,5 @@
 from database import conectar
+from psycopg2.extras import RealDictCursor
 
 
 def criar_admin():
@@ -13,10 +14,16 @@ def criar_admin():
 def buscar_usuario(usuario, senha):
 
     conn = conectar()
-    cursor = conn.cursor()
+
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
-        "SELECT * FROM usuarios WHERE usuario = %s AND senha = %s",
+        """
+        SELECT *
+        FROM usuarios
+        WHERE usuario = %s
+        AND senha = %s
+        """,
         (usuario, senha)
     )
 
@@ -26,7 +33,6 @@ def buscar_usuario(usuario, senha):
     conn.close()
 
     return user
-
 
 def buscar_usuario_existente(usuario):
 
@@ -136,7 +142,8 @@ def listar_usuarios(busca=None):
 def buscar_usuario_por_login(usuario):
 
     conn = conectar()
-    cursor = conn.cursor()
+
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
         """
