@@ -95,7 +95,12 @@ def enviar_recuperacao():
 
     email = request.form["email"]
 
-    return f"E-mail recebido: {email}"
+    usuario = obter_usuario_por_email(email)
+
+    if usuario:
+        return "Usuário encontrado!"
+
+    return "E-mail não encontrado!"
 # =========================
 # LOGOUT
 # =========================

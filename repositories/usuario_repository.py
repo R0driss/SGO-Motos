@@ -199,3 +199,29 @@ def atualizar_usuario(
 
     cursor.close()
     conn.close()
+
+from psycopg2.extras import RealDictCursor
+
+def buscar_usuario_por_email(email):
+
+    conn = conectar()
+
+    cursor = conn.cursor(
+        cursor_factory=RealDictCursor
+    )
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM usuarios
+        WHERE email = %s
+        """,
+        (email,)
+    )
+
+    usuario = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return usuario

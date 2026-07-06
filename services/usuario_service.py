@@ -66,3 +66,10 @@ def salvar_usuario(
         telefone,
         senha
     )
+
+
+def obter_usuario_por_email(email):
+
+    return buscar_usuario_por_email(
+        email
+    )
