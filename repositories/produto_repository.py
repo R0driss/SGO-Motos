@@ -1,36 +1,21 @@
 from database import conectar
 
-
 def listar_produtos(busca=None):
-
     conn = conectar()
     cursor = conn.cursor()
 
     if busca:
-
         cursor.execute(
-
             "SELECT * FROM produtos WHERE nome ILIKE %s",
-
             (f"%{busca}%",)
-
         )
-
     else:
-
-        cursor.execute(
-
-            "SELECT * FROM produtos"
-
-        )
+        cursor.execute("SELECT * FROM produtos")
 
     produtos = cursor.fetchall()
 
-    cursor.close()
     conn.close()
-
     return produtos
-
 
 def adicionar_produto(
     nome,

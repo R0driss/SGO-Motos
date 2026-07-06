@@ -36,13 +36,14 @@ app.register_blueprint(usuario)
 @app.context_processor
 def notificacoes_menu():
     if "usuario" in session:
-        return {
-            "total_notificacoes": contar_nao_lidas(session["usuario"])
-        }
-    return {
-        "total_notificacoes": 0
-    }
+        try:
+            return {
+                "total_notificacoes": contar_nao_lidas(session["usuario"])
+            }
+        except:
+            return {"total_notificacoes": 0}
 
+    return {"total_notificacoes": 0}
 # =========================
 # HOME ROUTE (opcional, evita erro de rota vazia)
 # =========================

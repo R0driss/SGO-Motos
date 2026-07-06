@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import psycopg2.extras
 
 def conectar():
     url = os.getenv("DATABASE_URL")
@@ -7,11 +8,9 @@ def conectar():
     if not url:
         raise Exception("DATABASE_URL não configurada")
 
-    # Corrige schema antigo do Heroku/Supabase
-    if url.startswith("postgres://"):
-        url = url.replace("postgres://", "postgresql://", 1)
+    url = url.replace("postgres://", "postgresql://", 1)
 
-    return psycopg2.connect(
-        url,
-        sslmode="require"
-    )
+    conn = psycopg2.connect(url, sslmode="require")
+    conn.cursor_factory = psycopg2.extras.RealDictCursor
+
+    return conn

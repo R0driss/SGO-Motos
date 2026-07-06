@@ -1,6 +1,7 @@
 from database import conectar
 
 
+
 def criar_notificacao(
     usuario,
     mensagem,
@@ -55,28 +56,23 @@ def listar_notificacoes(usuario):
     return notificacoes
 
 
-def contar_nao_lidas(usuario):
 
+
+def contar_nao_lidas(usuario):
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute(
-        """
-        SELECT COUNT(*) AS total
+    cursor.execute("""
+        SELECT COUNT(*)
         FROM notificacoes
         WHERE usuario = %s
-        AND lida = FALSE
-        """,
-        (usuario,)
-    )
+        AND lida = 0
+    """, (usuario,))
 
-    total = cursor.fetchone()
+    total = cursor.fetchone()[0]
 
-    cursor.close()
     conn.close()
-
-    return total["total"]
-
+    return total
 
 def marcar_como_lida(usuario):
 
