@@ -49,7 +49,6 @@ def login():
     if request.method == "POST":
 
         usuario = request.form["usuario"]
-
         senha = request.form["senha"]
 
         user = login_usuario(
@@ -57,16 +56,21 @@ def login():
             senha
         )
 
+        print("USER:", user)
+        print("TIPO:", type(user))
+
         if user:
 
             session["usuario"] = user["usuario"]
-
             session["tipo"] = user["tipo"]
 
-            if user["tipo"] == "admin":
+            print("TIPO USUARIO:", user["tipo"])
 
+            if user["tipo"] == "admin":
+                print("ENTROU COMO ADMIN")
                 return redirect(url_for("produto.admin"))
 
+            print("ENTROU COMO CLIENTE")
             return redirect(url_for("moto.cliente"))
 
         return "Login inválido"
